@@ -1,21 +1,39 @@
 <?php
-use Illuminate\Http\Request;
+
+// use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Resources\WorkerResponse;
 use App\Http\Resources\EnterpriseResource;
+use App\Http\Resources\ProductSaleResource;
 use App\Models\Enterprise;
-use App\Models\Product;
+use App\Models\ProductSale;
 use App\Models\Worker;
 
 Route::get("/worker/enterprise/getWorker/{enterpriseId}", function(int $enterpriseId) {
 	$enterprise = Enterprise::find($enterpriseId);
-	return WorkerResponse::collection($enterprise->workers()->get());
+	return WorkerResponse::collection($enterprise->worker);
 });
 
 Route::get("/enterprise/worker/getEnterprise/{workerId}", function(int $workerId) {
-	return new EnterpriseResource(Worker::find($workerId)->enterprise);
+	$worker = Worker::find($workerId);
+	return new EnterpriseResource($worker->enterprise);
 });
 
-Route::get("/product/sales/getProductSale/{productId}", function(int $productId) {
-	return Product::find($productId)->sales;
+// product / sale
+Route::get("/productSale/getInfoOf/{productSaleId}", function(int $productSaleId) {
+	return new ProductSaleResource(ProductSale::find($productSaleId));
 });
+
+// worker / sale (?)
+Route::get("/workerSales/getInfoOf/{workerSaleId}", function() {
+	return "testando..";
+});
+
+/**
+ * // generating pdf
+ * Route::get("/generate/pdf/{productSaleId}/{workerSaleId}", function(int productSaleId, int workerSaleId) {
+ *	$productSaleInfo = ProductSale::with(array("product", "sale"))->find($productSaleId);
+ *	$workerSaleInfo = WorkerSale::with(array("worker", "sale"))->find($workerSaleId);
+ *	// work on generating the PDF file
+ * });
+ **/

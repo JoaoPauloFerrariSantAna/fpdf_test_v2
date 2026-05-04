@@ -19,7 +19,7 @@ class WorkerFactory extends Factory
     public function definition(): array
     {
         return [
-			"name" => $this->faker->name,
+			"name" => $this->faker->firstName,
 			"email" => $this->faker->email(),
 			"sector" => $this->faker->randomElement(array_column(WorkerType::cases(), "value")),
 			"enterprise_id" => $this->faker->randomNumber(1, Enterprise::max("id")),

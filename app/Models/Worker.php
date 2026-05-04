@@ -5,8 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Worker extends Model
 {
@@ -16,13 +15,8 @@ class Worker extends Model
 	protected $table = "workers_tbl";
 	protected $fillable = array("name", "email", "sector", "enterprise_id");
 
-	public function enterprise(): HasOne
+	public function enterprise(): HasMany
 	{
-		return $this->hasOne(Enterprise::class);
-	}
-
-	public function sale(): BelongsTo
-	{
-		return $this->belongsTo(Sale::class);
+		return $this->hasMany(Enterprise::class);
 	}
 }

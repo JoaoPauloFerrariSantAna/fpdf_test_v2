@@ -14,14 +14,13 @@ class ProductFactory extends Factory
      *
      * @return array<string, mixed>
      */
-	protected $fillable = array("name", "stock", "price", "created_at", "updated_at");
     public function definition(): array
     {
 		$faker = $this->faker;
-        return [
+        return array(
 			"name" => $faker->word,
 			"stock" => $faker->numberBetween(1, 100),
-			"price" => $faker->randomFloat(2, 5, 2)
-        ];
+            "price" => $this->faker->randomFloat(1, 1, 200)
+		);
     }
 }

@@ -19,10 +19,8 @@ class SaleFactory extends Factory
     public function definition(): array
     {
 		$faker = $this->faker;
-        return [
-			"worker_id" => $faker->randomNumber(1, Worker::max("id")),
-			"product_id" => $faker->randomNumber(1, Product::max("id")),
-			"amount_sold" => $faker->randomNumber(1, Product::max("stock"))
-        ];
+        return array(
+            "amount_sold" => $faker->numberBetween(1, Product::max("stock")),
+        );
     }
 }

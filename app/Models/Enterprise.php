@@ -15,7 +15,7 @@ class Enterprise extends Model
 	protected $table = "enterprise_tbl";
 	protected $fillable = array("name", "worker_amount");
 
-	public function workers(): HasMany
+	public function worker(): HasMany
 	{
 		return $this->HasMany(Worker::class);
 	}

@@ -10,12 +10,8 @@ return new class extends Migration
     {
         Schema::create('sale_tbl', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('worker_id');
-            $table->unsignedBigInteger('product_id');
             $table->integer("amount_sold");
             $table->timestamps();
-            $table->foreign("worker_id")->references("id")->on("workers_tbl");
-            $table->foreign("product_id")->references("id")->on("product_tbl");
         });
     }
 

@@ -2,13 +2,15 @@
 
 namespace Database\Seeders;
 
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Enterprise;
 use App\Models\Worker;
 use App\Models\Product;
 use App\Models\Sale;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
+use App\Models\ProductSale;
+use App\Models\WorkerSale;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,5 +24,7 @@ class DatabaseSeeder extends Seeder
 		Product::factory(10)->create();
 		Worker::factory(10)->create();
 		Sale::factory(10)->create();
+		ProductSale::factory(10)->create();
+		WorkerSale::factory(10)->create();
     }
 }

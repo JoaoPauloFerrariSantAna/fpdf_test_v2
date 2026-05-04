@@ -17,6 +17,6 @@ class Enterprise extends Model
 
 	public function worker(): HasMany
 	{
-		return $this->HasMany(Worker::class);
+		return $this->hasMany(Worker::class);
 	}
 }

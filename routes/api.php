@@ -2,6 +2,7 @@
 
 // use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
 use App\Http\Resources\WorkerResponse;
 use App\Http\Resources\EnterpriseResource;
 use App\Http\Resources\ProductSaleResource;
@@ -31,11 +32,23 @@ Route::get("/workerSales/getInfo/{workerSaleId}", function(int $workerSaleId) {
 	return new WorkerSaleResource(WorkerSale::find($workerSaleId));
 });
 
-/**
- * // generating pdf
- * Route::get("/generate/pdf/{productSaleId}/{workerSaleId}", function(int $productSaleId, int $workerSaleId) {
- *	$productSaleInfo = ProductSale::with(array("product", "sale"))->find($productSaleId);
- *	$workerSaleInfo = WorkerSale::with(array("worker", "sale"))->find($workerSaleId);
- *	// work on generating the PDF file
- * });
- **/
+Route::get("/generate/pdf/{enterpriseId}", function(int $enterpriseId) {
+    return DB::table("worker_sale")
+        ->select(
+            "enterprise_tbl.name AS ENTERPRISE_NAME", 
+            "workers_tbl.name AS WHO_SOLD", 
+            "product_tbl.name AS WHAT_WAS_SOLD", 
+            "product_tbl.stock AS STOCK_LEFT", 
+            DB::RAW("sale_tbl.amount_sold * product_tbl.price AS TOTAL_AMOUNT_SOLD") ,
+            DB::RAW("SUM(sale_tbl.amount_sold) AS TOTAL_SOLD"),
+            "sale_tbl.created_at AS WHEN_SOLD"
+        )
+        ->join("workers_tbl", "worker_sale.worker_id", '=', "workers_tbl.id")
+        ->join("enterprise_tbl", "enterprise_tbl.worker_id", '=', "workers_tbl.id")
+        ->join("sale_tbl", "worker_sale.sale_id", '=', "sale_tbl.id")
+        ->join("product_sales", "product_sales.sale_id", '=', "sale_tbl.id")
+        ->join("product_tbl", "product_tbl.id", '=', "product_sales.sale_id")
+        ->where("product_tbl.id", '=', $enterpriseId)
+        ->groupBy("enterprise_tbl.name")
+        ->get();
+});

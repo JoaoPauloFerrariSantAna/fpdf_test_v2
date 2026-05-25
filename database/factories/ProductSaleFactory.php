@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Product;
+use App\Models\Sale;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ProductSale>
@@ -17,7 +19,8 @@ class ProductSaleFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+           "product_id" => $this->faker->numberBetween(1, Product::max("id")),
+           "sale_id" => $this->faker->numberBetween(1, Sale::max("id")),
         ];
     }
 }

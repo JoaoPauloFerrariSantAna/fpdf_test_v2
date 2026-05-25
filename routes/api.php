@@ -33,7 +33,7 @@ Route::get("/workerSales/getInfo/{workerSaleId}", function(int $workerSaleId) {
 });
 
 Route::get("/generate/pdf/{enterpriseId}", function(int $enterpriseId) {
-    return DB::table("worker_sale")
+    return DB::table("enterprise_tbl")
         ->select(
             "enterprise_tbl.name AS ENTERPRISE_NAME", 
             "workers_tbl.name AS WHO_SOLD", 
@@ -43,12 +43,12 @@ Route::get("/generate/pdf/{enterpriseId}", function(int $enterpriseId) {
             DB::RAW("SUM(sale_tbl.amount_sold) AS TOTAL_SOLD"),
             "sale_tbl.created_at AS WHEN_SOLD"
         )
-        ->join("workers_tbl", "worker_sale.worker_id", '=', "workers_tbl.id")
-        ->join("enterprise_tbl", "enterprise_tbl.worker_id", '=', "workers_tbl.id")
-        ->join("sale_tbl", "worker_sale.sale_id", '=', "sale_tbl.id")
+        ->join("workers_tbl", "workers_tbl.enterprise_id", '=', "enterprise_tbl.id")
+        ->join("worker_sale", "worker_sale.worker_id", '=', "workers_tbl.id")
+        ->join("sale_tbl", "sale_tbl.id", '=', "worker_sale.sale_id")
         ->join("product_sales", "product_sales.sale_id", '=', "sale_tbl.id")
         ->join("product_tbl", "product_tbl.id", '=', "product_sales.sale_id")
-        ->where("product_tbl.id", '=', $enterpriseId)
-        ->groupBy("enterprise_tbl.name")
+        ->where("enterprise_tbl.id", '=', $enterpriseId)
+        ->groupBy("workers_tbl.name")
         ->get();
 });

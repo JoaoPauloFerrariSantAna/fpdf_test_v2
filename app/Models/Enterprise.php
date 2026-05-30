@@ -26,12 +26,12 @@ class Enterprise extends Model
 	{
 		return DB::table("enterprise_tbl")
         ->select(
-            "enterprise_tbl.name AS ENTERPRISE_NAME",
-            "workers_tbl.name AS WHO_SOLD",
-            "product_tbl.name AS WHAT_WAS_SOLD",
-            "product_tbl.stock AS STOCK_LEFT",
-            DB::RAW("sale_tbl.amount_sold * product_tbl.price AS TOTAL_AMOUNT_SOLD"),
-            DB::RAW("SUM(sale_tbl.amount_sold) AS TOTAL_SOLD"),
+            "enterprise_tbl.name AS ENTERPRISE",
+            "workers_tbl.name AS SELLER",
+            "product_tbl.name AS SOLDED",
+            "product_tbl.stock AS LEFT",
+            DB::RAW("sale_tbl.amount_sold * product_tbl.price AS TOTAL_SOLD"),
+            DB::RAW("SUM(sale_tbl.amount_sold) AS TOTAL"),
             "sale_tbl.created_at AS WHEN_SOLD"
         )
         ->join("workers_tbl", "workers_tbl.enterprise_id", '=', "enterprise_tbl.id")
